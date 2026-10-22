@@ -1,17 +1,13 @@
-#use docker server.
-FROM ://microsoft.com
+#use python.
+FROM python:3.11-slim
 
-#determines python version.
-ENV PYTHON_VERSION=3.11.5
+WORKDIR /app
 
-#download python installer.
-RUN powershell -Command \
-    Invoke-WebRequest -Uri "https://python.org" -OutFile "python-installer.exe" ; \
-    Start-Process "python-installer.exe" -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait ; \
-    Remove-Item "python-installer.exe"
+#copy project files into the container.
+COPY . /app
 
-#defines work folder for container.
-WORKDIR C:/app
+#download opencv.
+RUN pip install opencv-python-headless
 
 # default command.
-CMD ["python"]
+CMD ["python", "tryAccessCamera.py"]
